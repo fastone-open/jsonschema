@@ -609,7 +609,9 @@ func (r *Reflector) lookupID(t reflect.Type) ID {
 }
 
 func (t *Schema) structKeywordsFromTags(f reflect.StructField, parent *Schema, propertyName string) {
-	t.Description = f.Tag.Get("jsonschema_description")
+	if description := f.Tag.Get("jsonschema_description"); description != "" {
+		t.Description = description
+	}
 
 	tags := splitOnUnescapedCommas(f.Tag.Get("jsonschema"))
 	tags = t.genericKeywords(tags, parent, propertyName)
